@@ -1,87 +1,115 @@
 class Node:
-    def __init__(self):
-        self.data = None
-        self.next = None
+    def __init__(self, data=None, next_node=None):
+        self._data = data
+        self._next = next_node
 
-    def set_data(self, data):
-        self.data = data
+    @property
+    def data(self):
+        return self._data
 
-    def get_data(self):
-        return self.data
+    @data.setter
+    def data(self, data):
+        self._data = data
 
-    def set_next(self, nextNode):
-        self.next = nextNode
+    @property
+    def next(self):
+        return self._next
 
-    def get_next(self):
-        return self.next
+    @next.setter
+    def next(self, next_node):
+        self._next = next_node
 
     def has_next(self):
         return self.next != None
 
 
-def list_length(node):
-    current = node
+###############################################
+
+
+def list_length(head):
+    current = head
     count = 0
 
     while current != None:
+        current = current.next
         count += 1
-        current = current.get_next()
 
     return count
 
 
 def insert_at_begining(head, data):
-    nodeToBeAdded = Node()
-    nodeToBeAdded.data = data
+    node = Node(data)
 
-    if head != None:
-        nodeToBeAdded.next = head
+    if head == None:
+        head = node
+    else:
+        node.next = head
+        head = node
 
-    head = nodeToBeAdded
     return head
 
 
-def insert_at_pos(head, pos, data):
-    listLength = list_length(head)
-
-    if listLength < pos or pos < 0:
-        return None
-    elif listLength == pos:
-        insert_at_end(head, data)
-    else:
-        nodeToBeAdded = Node()
-        nodeToBeAdded.data = data
-
-        count = 1
-        current = head
-
-        while count < pos-1:
-            count += 1
-            current = current.next()
-
-        nodeToBeAdded.set_next(current.get_next())
-        current.set_next(nodeToBeAdded)
-
-
 def insert_at_end(head, data):
-    pass
+    node = Node(data)
+
+    if head == None:
+        head = node
+    else:
+        current = head
+        while current.next != None:
+            current = current.next
+        current.next = node
 
 
-head = Node()
-head.set_data(1)
+def create_list(n=10):
+    head = Node(1)
 
-secondNode = Node()
-secondNode.set_data(2)
+    for i in range(2, n+1):
+        insert_at_end(head, i)
 
-head.set_next(secondNode)
+    return head
 
-print(list_length(head))
 
-head = insert_at_begining(head, 0)
+def create_cyclic_list(n=10):
+    head = create_list(n)
+    current = head
+    count = 0
+    cyclic_node = None
 
-print(list_length(head))
+    while current.next != None:
+        count += 1
+        if count == 7:
+            cyclic_node = current
+        current = current.next
 
-insert_at_pos(head, 1, 6)
+    current.next = cyclic_node
+    return head
 
-print(list_length(head))
-print(head.get_data())
+
+def print_list(head):
+    current = head
+
+    while current != None:
+        print(' ' + str(current.data), end=' >')
+        current = current.next
+
+
+#####################################################
+""" Driver code """
+#####################################################
+
+# head = Node()
+# head.data = 1
+
+# second_node = Node()
+# second_node.data = 2
+
+# head.next = second_node
+
+# head = insert_at_begining(head, 99)
+# insert_at_end(head, 4)
+
+
+# print(list_length(head))
+# print(head.data)
+# print_list(head)
