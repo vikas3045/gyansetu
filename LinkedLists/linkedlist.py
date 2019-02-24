@@ -92,6 +92,7 @@ def print_list(head):
     while current != None:
         print(' ' + str(current.data), end=' >')
         current = current.next
+    print()
 
 
 #####################################################
